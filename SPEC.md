@@ -1,34 +1,38 @@
 ## App Name
-HTML Calculator
+TaskMate
 
 ## Goal
-Fully working calculator that runs in browser. Single HTML file, no dependencies.
+Build a complete Android Task Manager app and produce an installable debug APK.
 
 ## Platform
-Web (single HTML file)
+Android app (Kotlin, MVVM, Room)
 
-## Core Features
-- Addition, subtraction, multiplication, division
-- Clear button (AC)
-- Decimal point support
-- Works on mobile screen
+## Core Features (V1)
+- Add task with title
+- Mark task complete/incomplete
+- Delete task
+- Persist tasks locally with Room database
+- Clean simple UI
 
-## Login / Auth
-None
+## Architecture
+- Kotlin
+- MVVM (ViewModel + Repository pattern)
+- Room persistence
 
-## External Services
-None
-
-## Data Storage
-None
+## Build Output Requirement
+- Run full Gradle build with `./gradlew assembleDebug`
+- Produce debug-signed APK ready to install on Android devices with debug signing enabled
 
 ## Network Access Required?
-No
+No (runtime app works fully offline)
 
 ## Done Means
-User opens index.html in any browser and can perform all basic calculations without errors or crashes.
+1. `./gradlew assembleDebug` succeeds without skipped fatal errors.
+2. APK exists at `app/build/outputs/apk/debug/app-debug.apk`.
+3. Core features are implemented and verified through tests/checks.
+4. `STATUS.md` is updated with milestone progress and verification results.
 
 ## Out of Scope (V1)
-- Scientific functions
-- History log
-- Themes
+- Cloud sync/login
+- Push notifications
+- Categories, reminders, due dates

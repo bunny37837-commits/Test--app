@@ -1,28 +1,28 @@
 ---
 name: project-workflow
-description: Workflow instructions for the HTML Calculator single-file web project.
+description: Workflow instructions for the TaskMate Android project.
 ---
 
 # Project Workflow Skill
 
 ## Build Commands
-- Open `index.html` directly in a browser.
-- Optional local server for manual verification: `python3 -m http.server 8000`
+- `./gradlew assembleDebug`
+- `./gradlew test`
 
 ## Verification Steps
-1. Ensure `index.html` loads without console/runtime errors.
-2. Verify operations: add, subtract, multiply, divide.
-3. Verify decimal input and clear (AC) behavior.
-4. Verify responsive layout on mobile viewport.
+1. Build debug APK with `./gradlew assembleDebug`.
+2. Run unit tests with `./gradlew test`.
+3. Confirm APK exists at `app/build/outputs/apk/debug/app-debug.apk`.
+4. Validate task CRUD + completion toggling backed by Room persistence.
 
 ## Repo Workflow
-1. Update `PLANS.md` before implementation.
-2. Implement one milestone at a time (V1 -> V2 -> V3).
-3. Run verification checks and document results in `STATUS.md`.
-4. Record major technical decisions in `DECISIONS.md`.
-5. Commit using milestone-prefixed commit message.
+1. Ensure `SPEC.md` reflects requested deliverable.
+2. Keep milestone focus: V1 before V2/V3.
+3. Record architecture/security decisions in `DECISIONS.md`.
+4. Update `STATUS.md` after verification.
+5. Use milestone-prefixed commit format.
 
 ## Project Conventions
-- Keep implementation dependency-free.
-- Use semantic HTML, scoped CSS, and plain JavaScript in the single file.
-- Keep UI accessible with labeled display and touch-friendly controls.
+- Kotlin + MVVM + Room.
+- Keep UI simple, clear, and lightweight.
+- No runtime network dependency.

@@ -1,12 +1,22 @@
-# HTML Calculator
+# TaskMate (Android)
 
-Single-file calculator app built for browser use.
+TaskMate is a simple Android Task Manager app built with Kotlin, MVVM, and Room.
 
-## App Link
-- [Open the calculator (`index.html`)](./index.html)
+## Features
+- Add task with title
+- Mark task complete/incomplete
+- Delete task
+- Local persistence using Room DB
 
-## Run Locally
-1. Open `index.html` directly in any modern browser.
-2. Optional local server:
-   - `python3 -m http.server 8000`
-   - then visit `http://localhost:8000/index.html`
+## Build
+```bash
+./gradlew assembleDebug
+```
+
+Expected APK output path:
+- `app/build/outputs/apk/debug/app-debug.apk`
+
+## Install on device
+```bash
+adb install -r app/build/outputs/apk/debug/app-debug.apk
+```

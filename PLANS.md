@@ -1,67 +1,36 @@
-# PLANS.md — Project Roadmap
+# PLANS.md — TaskMate Roadmap
 
 ## Status
 - [ ] Not Started
 - [x] In Progress — Current: V1
 - [ ] Complete
 
-## V1 — Core Working Feature
+## V1 — Core working feature
 
 ### Goal
-Deliver a fully functional single-file HTML calculator runnable directly in a browser.
+Deliver an installable debug APK for TaskMate with local task management.
 
 ### Done Means
-User opens `index.html` in a browser and can perform add/subtract/multiply/divide, clear input, and use decimals without errors.
+- Build command `./gradlew assembleDebug` passes.
+- Debug APK exists and path is documented.
+- User can add, toggle complete/incomplete, and delete tasks.
+- Tasks persist after app restart via Room.
 
 ### Acceptance Criteria
-- [x] Single `index.html` contains structure, styling, and logic.
-- [x] Supports `+`, `-`, `×`, `÷`, decimal point, and equals.
-- [x] Includes AC clear button.
-- [x] Responsive and usable on small mobile screens.
-- [x] No external dependencies or network usage.
+- [ ] Kotlin Android project configured.
+- [ ] MVVM layers implemented (UI, ViewModel, Repository, DAO/DB).
+- [ ] Room entity + DAO + database created.
+- [ ] RecyclerView task list with toggle + delete controls.
+- [ ] Input UI allows creating tasks with title.
+- [ ] Full debug build executed successfully.
+- [ ] STATUS updated with verification outputs.
 
-### Tasks
-- [x] Create calculator UI and button grid.
-- [x] Implement calculator state machine in JavaScript.
-- [x] Add responsive CSS for mobile layout.
-- [x] Validate core operations and edge cases manually.
+## V2 — Complete feature set
+- Add task validation UX polish.
+- Add filtering (all/completed/pending).
+- Improve accessibility labels and empty-state messaging.
 
-## V2 — Complete Feature Set
-
-### Goal
-Polish user experience for robust day-to-day usage.
-
-### Acceptance Criteria
-- [ ] Keyboard input support added.
-- [ ] Improved divide-by-zero feedback behavior.
-- [ ] Additional usability polish (focus states / accessibility enhancements).
-
-### Tasks
-- [ ] Add keyboard event handling.
-- [ ] Add explicit error state UX text.
-- [ ] Add accessibility refinements.
-
-## V3 — Production Ready
-
-### Goal
-Finalize docs and verification for handoff.
-
-### Acceptance Criteria
-- [ ] Build passes all checks.
-- [ ] No known critical issues.
-- [ ] Documentation complete and current.
-
-### Tasks
-- [ ] Run final verification loop.
-- [ ] Final docs/status consistency review.
-
-## Risks & Blockers
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| JavaScript state edge-case bug | Medium | Keep logic centralized and test operation chains manually. |
-| Mobile button tap targets too small | Medium | Use responsive sizing and minimum touch target spacing. |
-
-## Milestone History
-| Milestone | Completed On | Verified By |
-|-----------|-------------|-------------|
-| V1 | 2026-02-28 | Manual browser + Playwright checks |
+## V3 — Production ready
+- Add release signing flow docs and secure keystore handling guidance.
+- Expand instrumentation/unit test coverage.
+- Final release readiness checklist.

@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML Calculator</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --bg: #f3f4f6;
+        --card: #ffffff;
+        --text: #111827;
+        --muted: #6b7280;
+        --btn: #e5e7eb;
+        --btn-op: #f59e0b;
+        --btn-ac: #ef4444;
+        --btn-eq: #10b981;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        background: var(--bg);
+        font-family: Arial, Helvetica, sans-serif;
+        color: var(--text);
+        padding: 1rem;
+      }
+
+      .calculator {
+        width: min(100%, 22rem);
+        background: var(--card);
+        border-radius: 1rem;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.16);
+        overflow: hidden;
+      }
+
+      .display-wrap {
+        padding: 1rem;
+        background: #1f2937;
+      }
+
+      .display-label {
+        margin: 0 0 0.35rem;
+        color: #d1d5db;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .display {
+        width: 100%;
+        border: 0;
+        background: transparent;
+        color: #f9fafb;
+        font-size: clamp(2rem, 7vw, 2.35rem);
+        text-align: right;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        padding: 0.75rem;
+      }
+
+      button {
+        border: 0;
+        border-radius: 0.75rem;
+        min-height: 3.25rem;
+        font-size: 1.2rem;
+        font-weight: 700;
+        background: var(--btn);
+        color: var(--text);
+        cursor: pointer;
+      }
+
+      button:active { transform: scale(0.98); }
+      .operator { background: var(--btn-op); color: #111827; }
+      .clear { background: var(--btn-ac); color: #fff; }
+      .equals { background: var(--btn-eq); color: #06281f; }
+      .wide { grid-column: span 2; }
+
+      @media (max-width: 420px) {
+        .buttons { gap: 0.4rem; padding: 0.65rem; }
+        button { min-height: 3rem; font-size: 1.1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="calculator" aria-label="Calculator">
+      <section class="display-wrap">
+        <p class="display-label">Display</p>
+        <input id="display" class="display" type="text" value="0" aria-live="polite" readonly />
+      </section>
+
+      <section class="buttons" aria-label="Calculator buttons">
+        <button class="clear wide" data-action="clear">AC</button>
+        <button class="operator" data-action="operator" data-value="/">÷</button>
+        <button class="operator" data-action="operator" data-value="*">×</button>
+
+        <button data-action="digit" data-value="7">7</button>
+        <button data-action="digit" data-value="8">8</button>
+        <button data-action="digit" data-value="9">9</button>
+        <button class="operator" data-action="operator" data-value="-">−</button>
+
+        <button data-action="digit" data-value="4">4</button>
+        <button data-action="digit" data-value="5">5</button>
+        <button data-action="digit" data-value="6">6</button>
+        <button class="operator" data-action="operator" data-value="+">+</button>
+
+        <button data-action="digit" data-value="1">1</button>
+        <button data-action="digit" data-value="2">2</button>
+        <button data-action="digit" data-value="3">3</button>
+        <button class="equals" data-action="equals">=</button>
+
+        <button class="wide" data-action="digit" data-value="0">0</button>
+        <button data-action="decimal">.</button>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const display = document.getElementById('display');
+
+        let firstOperand = null;
+        let operator = null;
+        let waitingForSecondOperand = false;
+
+        const formatResult = (value) => {
+          if (!Number.isFinite(value)) {
+            return 'Error';
+          }
+          const rounded = Math.round((value + Number.EPSILON) * 1e10) / 1e10;
+          return Number.isInteger(rounded) ? String(rounded) : String(rounded);
+        };
+
+        const updateDisplay = (value) => {
+          display.value = value;
+        };
+
+        const inputDigit = (digit) => {
+          const current = display.value;
+          if (waitingForSecondOperand) {
+            updateDisplay(digit);
+            waitingForSecondOperand = false;
+            return;
+          }
+          updateDisplay(current === '0' ? digit : current + digit);
+        };
+
+        const inputDecimal = () => {
+          if (waitingForSecondOperand) {
+            updateDisplay('0.');
+            waitingForSecondOperand = false;
+            return;
+          }
+          if (!display.value.includes('.')) {
+            updateDisplay(display.value + '.');
+          }
+        };
+
+        const clearAll = () => {
+          firstOperand = null;
+          operator = null;
+          waitingForSecondOperand = false;
+          updateDisplay('0');
+        };
+
+        const calculate = (left, right, op) => {
+          switch (op) {
+            case '+': return left + right;
+            case '-': return left - right;
+            case '*': return left * right;
+            case '/': return right === 0 ? Number.NaN : left / right;
+            default: return right;
+          }
+        };
+
+        const handleOperator = (nextOperator) => {
+          const inputValue = Number(display.value);
+
+          if (operator && waitingForSecondOperand) {
+            operator = nextOperator;
+            return;
+          }
+
+          if (firstOperand === null) {
+            firstOperand = inputValue;
+          } else if (operator) {
+            const result = calculate(firstOperand, inputValue, operator);
+            const formatted = formatResult(result);
+            updateDisplay(formatted);
+
+            if (formatted === 'Error') {
+              firstOperand = null;
+              operator = null;
+              waitingForSecondOperand = false;
+              return;
+            }
+            firstOperand = result;
+          }
+
+          waitingForSecondOperand = true;
+          operator = nextOperator;
+        };
+
+        document.querySelector('.buttons').addEventListener('click', (event) => {
+          const target = event.target;
+          if (!(target instanceof HTMLButtonElement)) return;
+
+          const { action, value } = target.dataset;
+          if (action === 'digit') inputDigit(value);
+          if (action === 'decimal') inputDecimal();
+          if (action === 'clear') clearAll();
+          if (action === 'operator') handleOperator(value);
+          if (action === 'equals' && operator) handleOperator(operator);
+        });
+      })();
+    </script>
+  </body>
+</html>

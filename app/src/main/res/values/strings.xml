@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TaskMate</string>
+    <string name="hint_task_title">Enter task title</string>
+    <string name="add_task">Add</string>
+    <string name="delete">Delete</string>
+    <string name="empty_state">No tasks yet. Add your first task.</string>
+</resources>

@@ -80,8 +80,6 @@
 
 ---
 
-# ✅ EXAMPLE (Delete after reading)
-
 ## App Name
 TaskFlow
 
